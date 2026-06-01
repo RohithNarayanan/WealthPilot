@@ -1,26 +1,22 @@
-'use client';
+"use client";
 
-import React from 'react';
+import { Menu } from "lucide-react";
+import { useAppStore } from "@/store/useAppStore";
 
-const Navbar: React.FC = () => {
+export default function Navbar() {
+  const { toggleSidebar } = useAppStore();
+
   return (
-    <header className="flex items-center justify-between w-full border-b border-slate-200 bg-white px-6 py-4 shadow-sm">
-      <div>
-        <h1 className="text-lg font-semibold">WealthPilot</h1>
-        <p className="text-sm text-slate-500">Personal finance, investing, and AI insights.</p>
-      </div>
+    <header className="h-16 border-b border-zinc-800 bg-zinc-950 flex items-center justify-between px-6">
 
-      <div className="flex items-center gap-4">
-        <button className="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700 hover:bg-slate-50">
-          Notifications
-        </button>
-        <div className="flex items-center gap-3 rounded-full bg-slate-100 px-4 py-2">
-          <span className="h-9 w-9 rounded-full bg-slate-300" />
-          <span className="text-sm font-medium">Rohith</span>
-        </div>
-      </div>
+      <button
+        onClick={toggleSidebar}
+        className="p-2 rounded-lg hover:bg-zinc-800"
+      >
+        <Menu />
+      </button>
+
+      <div className="h-10 w-10 rounded-full bg-emerald-500" />
     </header>
   );
-};
-
-export default Navbar;
+}

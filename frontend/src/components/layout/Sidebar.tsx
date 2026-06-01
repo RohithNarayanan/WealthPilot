@@ -1,42 +1,75 @@
-'use client';
+"use client";
 
-import React from 'react';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { NAV_ITEMS } from "@/constants/navigation";
+import { useAppStore } from "@/store/useAppStore";
 
-const Sidebar: React.FC = () => {
+export default function Sidebar() {
+  const pathname = usePathname();
+
+  const { sidebarOpen } = useAppStore();
+
   return (
-    <aside className="w-72 min-h-screen bg-slate-950 text-white p-4">
-      <div className="text-xl font-semibold mb-6">WealthPilot</div>
-      <nav className="space-y-3">
-        <a href="/dashboard" className="block rounded-lg px-3 py-2 hover:bg-slate-800">
-          Dashboard
-        </a>
-        <a href="/income-tax" className="block rounded-lg px-3 py-2 hover:bg-slate-800">
-          Income Tax
-        </a>
-        <a href="/expense-planner" className="block rounded-lg px-3 py-2 hover:bg-slate-800">
-          Expense Planner
-        </a>
-        <a href="/emi-planner" className="block rounded-lg px-3 py-2 hover:bg-slate-800">
-          EMI Planner
-        </a>
-        <a href="/goal-planner" className="block rounded-lg px-3 py-2 hover:bg-slate-800">
-          Goal Planner
-        </a>
-        <a href="/stock-analysis" className="block rounded-lg px-3 py-2 hover:bg-slate-800">
-          Stock Analysis
-        </a>
-        <a href="/ai-advisor" className="block rounded-lg px-3 py-2 hover:bg-slate-800">
-          AI Advisor
-        </a>
-        <a href="/profile" className="block rounded-lg px-3 py-2 hover:bg-slate-800">
-          Profile
-        </a>
-        <a href="/settings" className="block rounded-lg px-3 py-2 hover:bg-slate-800">
-          Settings
-        </a>
+    <aside
+      className={`
+        ${
+          sidebarOpen ? "w-64" : "w-20"
+        }
+        h-screen
+        bg-zinc-950
+        border-r
+        border-zinc-800
+        transition-all
+        duration-300
+      `}
+    >
+      <div className="p-6">
+        {sidebarOpen ? (
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+            WealthPilot
+          </h1>
+        ) : (
+          <h1 className="text-2xl font-bold text-emerald-400">
+            W
+          </h1>
+        )}
+      </div>
+
+      <nav className="px-4">
+        {NAV_ITEMS.map((item) => {
+          const Icon = item.icon;
+
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`
+                flex
+                items-center
+                gap-3
+                p-3
+                rounded-lg
+                mb-2
+                transition-all
+                ${
+                  pathname === item.href
+                    ? "bg-amber-500 text-black"
+                    : "text-zinc-300 hover:bg-zinc-800"
+                }
+              `}
+            >
+              <Icon size={20} />
+
+              {sidebarOpen && (
+                <span>
+                  {item.title}
+                </span>
+              )}
+            </Link>
+          );
+        })}
       </nav>
     </aside>
   );
-};
-
-export default Sidebar;
+}
