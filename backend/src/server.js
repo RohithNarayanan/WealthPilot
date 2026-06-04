@@ -4,10 +4,11 @@ const dotenv = require("dotenv");
 
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
+const { protect } = require("./middleware/authMiddleware");
 
 dotenv.config();
 
-// Connect MongoDB
+// Connect Database
 connectDB();
 
 const app = express();
@@ -19,14 +20,26 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", authRoutes);
 
-// Test Route
+// Health Check Route
 app.get("/", (req, res) => {
   res.json({
     message: "WealthPilot Backend Running",
   });
 });
 
-// Server
+// Protected Route
+app.get(
+  "/api/profile",
+  protect,
+  (req, res) => {
+    res.json({
+      message: "Protected Profile Access",
+      user: req.user,
+    });
+  }
+);
+
+// Start Server
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
